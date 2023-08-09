@@ -2,18 +2,19 @@ import './board.css'
 
 export default function Board({isXNext, squares, onPlay, setStatus}) {
     const onSquareClick = (index) => {
+        const newSquares = [...squares];
         // don't do anything if user clicks a square with an emoji.
-        if (squares[index]) return;
+        if (newSquares[index]) return;
         // change the value of the square
-        squares[index] = isXNext ? "🦄" : "🐙";
+        newSquares[index] = isXNext ? "🦄" : "🐙";
         // check if win condition
-        const winner = isWinCondition(squares);
+        const winner = isWinCondition(newSquares);
         if (winner) {
             setStatus("Winner: " + winner);
             return;
         }
-        // bubble up the squares to the game
-        onPlay(squares);
+        // bubble up the newSquares to the game
+        onPlay(newSquares);
     }
 
     return (
