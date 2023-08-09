@@ -3,10 +3,22 @@ import Board from './board';
 import './game.css'
 
 export default function Game() {
-    const [currentSquares, setCurrentSquares] = useState(new Array(9).fill("x"));
+    const [history, setHistory] = useState([new Array(9).fill(null)]);
+    const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
+    const currenState = history[currentMoveIndex];
+    const isXNext = currentMoveIndex % 2 === 0; 
+    
+    const handlePlay = (nextState) => {
+        // grab the previous history and concat the current state.
+        const nextHistory =  [...history.slice(0, currentMoveIndex+1), nextState];
+        setHistory(nextHistory);
+        setCurrentMoveIndex(nextHistory.length-1);
+        console.log(history);
+    }
+
     return (
         <div className='tic-tac-toe-game'>
-            <Board squares={currentSquares}></Board>
+            <Board isXNext={isXNext} squares={currenState} onPlay={handlePlay}></Board>
         </div>
     )
 }
