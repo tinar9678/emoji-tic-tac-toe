@@ -8,11 +8,15 @@ export default function Game({setStatus}) {
     const isXNext = currentMoveIndex % 2 === 0; 
     
     const handlePlay = (nextState) => {
+        // check if tie state -- the board is full but no winners.
+        if (history.length >= 9) {
+            setStatus("No winners! Tied");
+            return;
+        }
         // grab the previous history and concat the current state.
         const nextHistory =  [...history.slice(0, currentMoveIndex+1), nextState];
         setHistory(nextHistory);
         setCurrentMoveIndex(nextHistory.length-1);
-        console.log(history);
     }
 
     return (
