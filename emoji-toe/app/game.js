@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Board from './board';
-import './game.css'
 
-export default function Game() {
+export default function Game({setStatus}) {
     const [history, setHistory] = useState([new Array(9).fill(null)]);
     const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
     const currenState = history[currentMoveIndex];
@@ -18,7 +17,7 @@ export default function Game() {
 
     return (
         <div className='tic-tac-toe-game'>
-            <Board isXNext={isXNext} squares={currenState} onPlay={handlePlay}></Board>
+            <Board isXNext={isXNext} squares={currenState} onPlay={handlePlay} setStatus={setStatus}></Board>
         </div>
     )
 }

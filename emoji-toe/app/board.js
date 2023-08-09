@@ -1,18 +1,17 @@
-import { useState } from 'react'
 import './board.css'
 
-function Square({value, onSquareClick}) {
-    return (
-        <div className='square' onClick={onSquareClick}>
-            {value}
-        </div>
-    )
-}
-
-export default function Board({isXNext, squares, onPlay}) {
+export default function Board({isXNext, squares, onPlay, setStatus}) {
     const onSquareClick = (index) => {
+        // don't do anything if user clicks a square with an emoji.
+        if (squares[index]) return;
         // change the value of the square
-        squares[index] = isXNext ? 'X' : 'O';
+        squares[index] = isXNext ? "🦄" : "🐙";
+        // check if win condition
+        const winner = isWinCondition(squares);
+        if (winner) {
+            setStatus("Winner: " + winner);
+            return;
+        }
         // bubble up the squares to the game
         onPlay(squares);
     }
@@ -37,3 +36,32 @@ export default function Board({isXNext, squares, onPlay}) {
         </div>
     )
 }
+
+function Square({value, onSquareClick}) {
+    return (
+        <div className='square' onClick={onSquareClick}>
+            {value}
+        </div>
+    )
+}
+
+function isWinCondition(squares) {
+    // horizontal, vertical, diagonal
+    const winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+    for (const [a, b, c] of winConditions) {
+        if (squares[a] === squares[b] && squares[b] === squares[c] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+    return null;
+} 
